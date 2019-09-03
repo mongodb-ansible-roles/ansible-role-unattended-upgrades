@@ -1,0 +1,31 @@
+---
+- name: Check for 20auto-upgrades
+  stat:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+  register: autoupgrades
+
+- name: Set 20auto-upgrades update package list
+  lineinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '^APT::Periodic::Update-Package-Lists "1";'
+    line: APT::Periodic::Update-Package-Lists "0";
+  when: autoupgrades.stat.exists == true
+
+- name: Set 20auto-upgrades unattended upgrade
+  lineinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '^APT::Periodic::Unattended-Upgrade "1";'
+    line: APT::Periodic::Unattended-Upgrade "0";
+  when: autoupgrades.stat.exists == true
+
+- name: Check for 50unattended-upgrades
+  stat:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+  register: unattendedupgrades
+
+- name: Set 50unattended-upgrades allowed origins
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^  "${distro_id}:${distro_codename}-security";'
+    line: "//\"${distro_id}:${distro_codename}-security\";"
+  when: unattendedupgrades.stat.exists == true
