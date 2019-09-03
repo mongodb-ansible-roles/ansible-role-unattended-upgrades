@@ -26,6 +26,6 @@
 - name: Set 50unattended-upgrades allowed origins
   lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '^  "${distro_id}:${distro_codename}-security";'
-    line: "//\"${distro_id}:${distro_codename}-security\";"
+    regexp: '^  "\${distro_id}:\${distro_codename}-security";'
+    line: //    "${distro_id}:${distro_codename}-security";
   when: unattendedupgrades.stat.exists == true
