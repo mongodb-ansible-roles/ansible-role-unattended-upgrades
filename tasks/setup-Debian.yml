@@ -9,6 +9,7 @@
     path: /etc/apt/apt.conf.d/20auto-upgrades
     regexp: '^APT::Periodic::Update-Package-Lists "1";'
     line: APT::Periodic::Update-Package-Lists "0";
+  become: true
   when: autoupgrades.stat.exists == true
 
 - name: Set 20auto-upgrades unattended upgrade
@@ -16,6 +17,7 @@
     path: /etc/apt/apt.conf.d/20auto-upgrades
     regexp: '^APT::Periodic::Unattended-Upgrade "1";'
     line: APT::Periodic::Unattended-Upgrade "0";
+  become: true
   when: autoupgrades.stat.exists == true
 
 - name: Check for 50unattended-upgrades
@@ -28,4 +30,5 @@
     path: /etc/apt/apt.conf.d/50unattended-upgrades
     regexp: '^  "\${distro_id}:\${distro_codename}-security";'
     line: //    "${distro_id}:${distro_codename}-security";
+  become: true
   when: unattendedupgrades.stat.exists == true
