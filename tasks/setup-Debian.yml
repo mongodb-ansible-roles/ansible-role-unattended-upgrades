@@ -32,3 +32,8 @@
     line: //    "${distro_id}:${distro_codename}-security";
   become: true
   when: unattendedupgrades.stat.exists == true
+
+- name: Uninstall unattended-upgrades
+  apt:
+    name: unattended-upgrades
+    state: absent
